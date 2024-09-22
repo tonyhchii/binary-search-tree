@@ -121,6 +121,10 @@ class Tree {
   }
 
   levelOrderITR(callback) {
+    if (!callback) {
+      console.error("No Callback function");
+      return;
+    }
     const queue = [this.root];
     while (queue) {
       const curr = queue.shift();
@@ -133,9 +137,50 @@ class Tree {
   }
 
   levelOrderRecur(curr, callback) {
-    callback(curr);
-    this.levelOrderRecur(curr.left, callback);
-    this.levelOrderRecur(curr.right, callback);
+    if (!callback) {
+      console.error("No Callback function");
+      return;
+    }
+    if (curr) {
+      callback(curr);
+      this.levelOrderRecur(curr.left, callback);
+      this.levelOrderRecur(curr.right, callback);
+    }
+  }
+
+  inOrderRecur(node, callback) {
+    if (!callback) {
+      return;
+    }
+    if (node) {
+      this.inOrderRecur(node.left, callback);
+      callback(node);
+      this.inOrderRecur(node.right, callback);
+    }
+  }
+
+  preOrderRecur(node, callback) {
+    if (!callback) {
+      return;
+    }
+
+    if (node) {
+      callback(node);
+      this.preOrderRecur(node.left, callback);
+      this.preOrderRecur(node.right, callback);
+    }
+  }
+
+  postOrderRecur(node, callback) {
+    if (!callback) {
+      return;
+    }
+
+    if (node) {
+      this.postOrderRecur(node.left, callback);
+      this.postOrderRecur(node.right, callback);
+      callback(node);
+    }
   }
 
   prettyPrint = (node, prefix = "", isLeft = true) => {
@@ -157,7 +202,7 @@ class Tree {
 }
 
 const printCallBack = (node) => {
-  console.log(`Hey Callback we are on value ${node.value}`);
+  console.log(`CallBack: ${node.value}`);
 };
 
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
@@ -165,3 +210,6 @@ const test = new Tree(arr);
 test.prettyPrint(test.root);
 //test.levelOrderITR(printCallBack);
 //test.levelOrderRecur(test.root, printCallBack);
+//test.inOrderRecur(test.root, printCallBack);
+//test.preOrderRecur(test.root, printCallBack);
+//test.postOrderRecur(test.root, printCallBack);
