@@ -49,6 +49,30 @@ class Tree {
     return root;
   }
 
+  insert(value) {
+    let curr = this.root;
+    while (curr) {
+      if (curr.value > value) {
+        if (curr.left) {
+          curr = curr.left;
+        } else {
+          curr.left = new Node(value);
+          return;
+        }
+      } else if (curr.value < value) {
+        if (curr.right) {
+          curr = curr.right;
+        } else {
+          curr.right = new Node(value);
+          return;
+        }
+      } else {
+        console.log("value already exists");
+        return;
+      }
+    }
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -70,4 +94,6 @@ class Tree {
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const test = new Tree(arr);
 test.prettyPrint(test.root);
+test.insert("1");
 console.log(test.root);
+test.prettyPrint(test.root);
