@@ -49,7 +49,7 @@ class Tree {
     return root;
   }
 
-  insert(value) {
+  insertNode(value) {
     let curr = this.root;
     while (curr) {
       if (curr.value > value) {
@@ -73,6 +73,35 @@ class Tree {
     }
   }
 
+  deleteNode(value) {
+    const found = this.findNode(value);
+    if (!found) {
+      console.error("Node does not exist");
+    } else {
+      if (!found.left && !found.right) {
+        console.log("both nodes don't exist");
+      } else if (found.left && found.right) {
+        console.log("both nodes exist");
+      } else {
+        console.log("one node exists");
+      }
+    }
+  }
+
+  findNode(value) {
+    let curr = this.root;
+    while (curr) {
+      if (curr.value > value) {
+        curr = curr.left;
+      } else if (curr.value < value) {
+        curr = curr.right;
+      } else {
+        return curr;
+      }
+    }
+    return null;
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -94,6 +123,9 @@ class Tree {
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const test = new Tree(arr);
 test.prettyPrint(test.root);
-test.insert("1");
+test.insertNode("1");
 console.log(test.root);
 test.prettyPrint(test.root);
+test.deleteNode("1");
+test.deleteNode("3");
+test.deleteNode("8");
