@@ -197,6 +197,25 @@ class Tree {
     }
   }
 
+  preOrderITR(callback) {
+    const stack = [this.root];
+    while (stack.length != 0) {
+      let curr = stack.pop();
+      if (curr) {
+        callback(curr);
+        stack.push(curr.right);
+        stack.push(curr.left);
+      }
+    }
+  }
+
+  height(node) {
+    if (!node) {
+      return 0;
+    }
+    return 1 + Math.max(this.height(node.left), this.height(node.right));
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -219,7 +238,9 @@ const printCallBack = (node) => {
   console.log(`CallBack: ${node.value}`);
 };
 
-const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
+const arr = [
+  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 2, 10, 12, 15, 16,
+];
 const test = new Tree(arr);
 test.prettyPrint(test.root);
 //test.levelOrderITR(printCallBack);
@@ -227,4 +248,5 @@ test.prettyPrint(test.root);
 //test.inOrderRecur(test.root, printCallBack);
 //test.preOrderRecur(test.root, printCallBack);
 //test.postOrderRecur(test.root, printCallBack);
-test.inOrderITR(printCallBack);
+test.preOrderITR(printCallBack);
+console.log(test.height(test.root));
