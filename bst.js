@@ -97,6 +97,7 @@ class Tree {
 
     return node;
   }
+
   findInorder(node) {
     node = node.right;
     while (node.left) {
@@ -119,6 +120,18 @@ class Tree {
     return null;
   }
 
+  levelOrderITR(callback) {
+    const queue = [this.root];
+    while (queue) {
+      const curr = queue.shift();
+      if (curr) {
+        callback(curr);
+        queue.push(curr.left);
+        queue.push(curr.right);
+      }
+    }
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -137,11 +150,11 @@ class Tree {
   };
 }
 
+const printCallBack = (node) => {
+  console.log(`Hey Callback we are on value ${node.value}`);
+};
+
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const test = new Tree(arr);
 test.prettyPrint(test.root);
-test.deleteNode(test.root, "1");
-test.deleteNode(test.root, "3");
-test.deleteNode(test.root, "8");
-console.log(test.root);
-test.prettyPrint(test.root);
+test.levelOrderITR(printCallBack);
