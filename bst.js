@@ -73,19 +73,36 @@ class Tree {
     }
   }
 
-  deleteNode(value) {
-    const found = this.findNode(value);
-    if (!found) {
-      console.error("Node does not exist");
-    } else {
-      if (!found.left && !found.right) {
-        console.log("both nodes don't exist");
-      } else if (found.left && found.right) {
-        console.log("both nodes exist");
-      } else {
-        console.log("one node exists");
-      }
+  deleteNode(node, value) {
+    if (!node) {
+      return node;
     }
+
+    if (node.value > value) {
+      node.left = this.deleteNode(node.left, value);
+    } else if (node.value < value) {
+      node.right = this.deleteNode(node.right, value);
+    } else {
+      // found node
+      if (!node.left) {
+        return node.right;
+      }
+      if (!node.right) {
+        return node.left;
+      }
+      const next = this.findInorder(node);
+      node.value = next.value;
+      node.right = this.deleteNode(node.right, next.value);
+    }
+
+    return node;
+  }
+  findInorder(node) {
+    node = node.right;
+    while (node.left) {
+      node = node.left;
+    }
+    return node;
   }
 
   findNode(value) {
@@ -123,9 +140,8 @@ class Tree {
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const test = new Tree(arr);
 test.prettyPrint(test.root);
-test.insertNode("1");
+test.deleteNode(test.root, "1");
+test.deleteNode(test.root, "3");
+test.deleteNode(test.root, "8");
 console.log(test.root);
 test.prettyPrint(test.root);
-test.deleteNode("1");
-test.deleteNode("3");
-test.deleteNode("8");
