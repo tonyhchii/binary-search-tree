@@ -132,6 +132,12 @@ class Tree {
     }
   }
 
+  levelOrderRecur(curr, callback) {
+    callback(curr);
+    this.levelOrderRecur(curr.left, callback);
+    this.levelOrderRecur(curr.right, callback);
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -157,4 +163,5 @@ const printCallBack = (node) => {
 const arr = [1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324];
 const test = new Tree(arr);
 test.prettyPrint(test.root);
-test.levelOrderITR(printCallBack);
+//test.levelOrderITR(printCallBack);
+//test.levelOrderRecur(test.root, printCallBack);
