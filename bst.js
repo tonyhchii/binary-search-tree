@@ -8,15 +8,14 @@ class Node {
 
 class Tree {
   constructor(arr) {
-    arr.sort((a, b) => {
-      return a < b ? -1 : 1;
-    });
-    arr = [...new Set(arr)];
-    console.log(arr);
     this.root = this.buildTree(arr);
   }
 
   buildTree(arr) {
+    arr.sort((a, b) => {
+      return a < b ? -1 : 1;
+    });
+    arr = [...new Set(arr)];
     if (arr.length < 1) {
       return;
     }
@@ -216,6 +215,42 @@ class Tree {
     return 1 + Math.max(this.height(node.left), this.height(node.right));
   }
 
+  depth(node) {
+    let curr = this.root;
+    let depth = 0;
+    while (curr) {
+      if (curr.value > node.value) {
+        curr = curr.left;
+        depth += 1;
+      } else if (curr.value < node.value) {
+        curr = curr.right;
+        depth += 1;
+      } else {
+        return depth;
+      }
+    }
+    return null;
+  }
+
+  isBalanced(node) {
+    if (!node) {
+      return true;
+    }
+    return (
+      this.isBalanced(node.left) &&
+      this.isBalanced(node.right) &&
+      this.height(node.left) - this.height(node.right) <= 1
+    );
+  }
+
+  reBalance() {
+    const newArr = [];
+    this.inOrderITR((node) => {
+      newArr.push(node.value);
+    });
+    this.root = this.buildTree(newArr);
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -239,7 +274,7 @@ const printCallBack = (node) => {
 };
 
 const arr = [
-  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 324, 2, 10, 12, 15, 16,
+  1, 7, 4, 23, 8, 9, 4, 3, 5, 7, 9, 67, 6345, 333, 334, 335, 336, 337, 338,
 ];
 const test = new Tree(arr);
 test.prettyPrint(test.root);
@@ -249,4 +284,14 @@ test.prettyPrint(test.root);
 //test.preOrderRecur(test.root, printCallBack);
 //test.postOrderRecur(test.root, printCallBack);
 test.preOrderITR(printCallBack);
+console.log(test.height(test.root));
+console.log(test.depth(new Node("5")));
+
+test.root.right = new Node(1000);
+test.root.right.right = new Node(1001);
+test.prettyPrint(test.root);
+console.log(test.isBalanced(test.root));
+test.reBalance();
+console.log(test.isBalanced(test.root));
+test.prettyPrint(test.root);
 console.log(test.height(test.root));
