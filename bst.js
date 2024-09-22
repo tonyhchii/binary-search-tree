@@ -183,6 +183,20 @@ class Tree {
     }
   }
 
+  inOrderITR(callback) {
+    const stack = [];
+    let curr = this.root;
+    while (curr || stack.length !== 0) {
+      while (curr) {
+        stack.push(curr);
+        curr = curr.left;
+      }
+      curr = stack.pop();
+      callback(curr);
+      curr = curr.right;
+    }
+  }
+
   prettyPrint = (node, prefix = "", isLeft = true) => {
     if (node === null) {
       return;
@@ -213,3 +227,4 @@ test.prettyPrint(test.root);
 //test.inOrderRecur(test.root, printCallBack);
 //test.preOrderRecur(test.root, printCallBack);
 //test.postOrderRecur(test.root, printCallBack);
+test.inOrderITR(printCallBack);
